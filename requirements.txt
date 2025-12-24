@@ -1,18 +1,10 @@
-streamlit
-whisper
-librosa
-numpy
-scipy
-soundfile
-asyncio
-edge-tts
--f https://download.pytorch.org/whl/cpu/torch_stable.html
 streamlit>=1.30.0
 whisper
-torch==2.2.0+cpu
-torchaudio==2.2.0+cpu
+torch
+torchaudio
 librosa
 python-dotenv>=1.0.0
 groq>=1.0.0
-
-
+soundfile
+edge-tts
+asyncio
