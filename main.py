@@ -1,6 +1,8 @@
 from asr.transcriber import record_audio, transcribe_audio
 from tts.speaker import speak_text
 from llm.agent import get_groq_response
+import asyncio
+
 
 if __name__ == "__main__":
     try:
@@ -16,7 +18,7 @@ if __name__ == "__main__":
         print("AI:", ai_response)
 
         # Convert AI response to speech
-        speak_text(ai_response)
+        asyncio.run(speak_text(ai_response))
 
     except Exception as e:
         print("Error:", e)

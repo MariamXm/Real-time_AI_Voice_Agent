@@ -7,6 +7,22 @@ import whisper
 from llm.agent import get_groq_response  # Groq AI wrapper
 from tts.speaker import speak_text  # Import TTS from speaker.py
 
+
+from streamlit_webrtc import webrtc_streamer, AudioProcessorBase, WebRtcMode
+import numpy as np
+
+class AudioProcessor(AudioProcessorBase):
+    def recv_audio(self, frame):
+        audio_data = frame.to_ndarray()
+        # Save or process audio_data here
+        return frame
+
+webrtc_streamer(
+    key="microphone",
+    mode=WebRtcMode.SENDRECV,
+    audio_processor_factory=AudioProcessor
+)
+
 # ----------------------------- CONFIG
 SAMPLE_RATE = 16000
 DURATION = 5
@@ -55,3 +71,5 @@ if st.button(" Record & Generate Response"):
 
     # Add audio player
     st.audio(OUTPUT_AUDIO)
+
+

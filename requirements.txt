@@ -1,7 +1,9 @@
-openai
-sounddevice
+streamlit
+whisper
+librosa
 numpy
-pydub
-elevenlabs
+scipy
 soundfile
-requests
+asyncio
+edge-tts
+
