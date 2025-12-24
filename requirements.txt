@@ -8,3 +8,9 @@ asyncio
 edge-tts
 python-dotenv>=1.0.0
 groq
+python-dotenv>=1.0.0
+groq>=1.0.0
+streamlit>=1.30.0
+whisper
+librosa
+

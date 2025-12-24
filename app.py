@@ -11,7 +11,7 @@ model = whisper.load_model("base")
 OUTPUT_AUDIO = "response.wav"
 
 #UI
-st.title("🎤 Voice AI Agent")
+st.title(" Voice AI Agent")
 st.write("Click **Record**, speak, then wait for the AI response.")
 
 # RECORD AUDIO (BROWSER MIC)
