@@ -6,11 +6,14 @@ scipy
 soundfile
 asyncio
 edge-tts
-python-dotenv>=1.0.0
-groq
-python-dotenv>=1.0.0
-groq>=1.0.0
-streamlit>=1.30.0
 whisper
 librosa
+streamlit>=1.30.0
+whisper
+torch==2.2.0+cpu
+torchaudio==2.2.0+cpu
+librosa
+python-dotenv>=1.0.0
+groq>=1.0.0
+
 
