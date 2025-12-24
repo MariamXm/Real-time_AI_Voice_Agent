@@ -1,0 +1,29 @@
+# Virtual environment
+venv/
+.env
+
+# Python compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Audio/video temporary files
+*.wav
+*.mp3
+
+# Streamlit cache
+.streamlit/
+
+# IDE / Editor folders
+.vscode/
+.idea/
+
+# Jupyter notebooks checkpoints (if any)
+.ipynb_checkpoints/
