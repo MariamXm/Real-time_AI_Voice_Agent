@@ -13,6 +13,6 @@ def get_groq_response(prompt):
             {"role": "user", "content": prompt},
         ],
         model="llama-3.3-70b-versatile",
-        max_tokens=220
+        max_tokens=520
     )
     return chat_completion.choices[0].message.content

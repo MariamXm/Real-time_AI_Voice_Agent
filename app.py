@@ -1,75 +1,48 @@
-import os
 import streamlit as st
-import sounddevice as sd
-import soundfile as sf
-import librosa
 import whisper
-from llm.agent import get_groq_response  # Groq AI wrapper
-from tts.speaker import speak_text  # Import TTS from speaker.py
+import librosa
+import asyncio
+from llm.agent import get_groq_response
+from tts.speaker import speak_text
 
+st.set_page_config(page_title="Voice AI Agent", layout="centered")
 
-from streamlit_webrtc import webrtc_streamer, AudioProcessorBase, WebRtcMode
-import numpy as np
-
-class AudioProcessor(AudioProcessorBase):
-    def recv_audio(self, frame):
-        audio_data = frame.to_ndarray()
-        # Save or process audio_data here
-        return frame
-
-webrtc_streamer(
-    key="microphone",
-    mode=WebRtcMode.SENDRECV,
-    audio_processor_factory=AudioProcessor
-)
-
-# ----------------------------- CONFIG
-SAMPLE_RATE = 16000
-DURATION = 5
-AUDIO_FILE = "input.wav"
+model = whisper.load_model("base")
 OUTPUT_AUDIO = "response.wav"
 
-# Load Whisper model
-model = whisper.load_model("base")
+#UI
+st.title("🎤 Voice AI Agent")
+st.write("Click **Record**, speak, then wait for the AI response.")
 
-# ----------------------------- AUDIO RECORDING
-def record_audio(duration=DURATION, filename=AUDIO_FILE):
-    st.info(" Recording your voice...")
-    audio = sd.rec(int(duration * SAMPLE_RATE), samplerate=SAMPLE_RATE, channels=1)
-    sd.wait()
-    sf.write(filename, audio, SAMPLE_RATE)
-    st.success(f" Audio saved as {filename}")
-    return filename
+# RECORD AUDIO (BROWSER MIC)
+audio_input = st.audio_input(" Record your voice")
 
-# ----------------------------- TRANSCRIBE
-def transcribe_audio(file_path):
-    audio, sr = librosa.load(file_path, sr=16000)
-    result = model.transcribe(audio)
-    return result["text"]
+if audio_input is not None:
+    # Save recorded audio
+    with open("input.wav", "wb") as f:
+        f.write(audio_input.read())
 
-# ----------------------------- STREAMLIT UI
-st.set_page_config(page_title="Real-Time Voice AI Agent", layout="centered")
-st.title(" Real-Time Voice AI Agent")
+    st.success(" Audio recorded")
 
+    # TRANSCRIBE
+    st.info(" Transcribing audio...")
+    audio, _ = librosa.load("input.wav", sr=16000)
+    result = model.transcribe(audio, fp16=False)
+    user_text = result["text"].strip()
 
-if st.button(" Record & Generate Response"):
-    # Record audio
-    wav_file = record_audio()
-
-    # Transcribe
-    user_text = transcribe_audio(wav_file)
-    st.subheader("You said:")
+    st.subheader(" You said:")
     st.text_area("", user_text, height=80)
 
-    # Get AI response
+    #  AI RESPONSE
+    st.info(" Generating AI response...")
     ai_response = get_groq_response(user_text)
+
     st.subheader("AI Response:")
-    st.text_area("", ai_response, height=350)
+    st.text_area("", ai_response, height=450)
 
-    # Generate TTS
-    speak_text(ai_response, filename=OUTPUT_AUDIO)
+    # TEXT TO SPEECH
+    st.info(" Generating voice...")
+    asyncio.run(speak_text(ai_response, filename=OUTPUT_AUDIO))
 
-    # Add audio player
+    st.subheader("AI Voice Response:")
     st.audio(OUTPUT_AUDIO)
-
-
