@@ -6,4 +6,5 @@ scipy
 soundfile
 asyncio
 edge-tts
-python-dotenv
+python-dotenv>=1.0.0
+groq
