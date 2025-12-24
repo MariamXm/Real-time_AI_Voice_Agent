@@ -1,7 +1,8 @@
 streamlit>=1.30.0
 whisper
-torch
-torchaudio
+-f https://download.pytorch.org/whl/cpu/torch_stable.html
+torch==2.9.1
+torchaudio==2.9.1
 librosa
 python-dotenv>=1.0.0
 groq>=1.0.0
