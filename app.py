@@ -38,7 +38,12 @@ if audio_input is not None:
     ai_response = get_groq_response(user_text)
 
     st.subheader("AI Response:")
-    st.text_area("", ai_response, height=450)
+    st.text_area(
+    label="AI Response",
+    value=ai_response,
+    height=450,
+    label_visibility="collapsed"
+)
 
     # TEXT TO SPEECH
     st.info(" Generating voice...")
